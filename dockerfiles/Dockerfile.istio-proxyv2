@@ -1,9 +1,8 @@
 FROM golang:1.17 AS build-env
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 WORKDIR /tmp
-RUN git clone https://github.com/istio/istio.git
-RUN cd istio/pilot/cmd/pilot-agent && git checkout 1.13.2
-RUN go build -gcflags="all=-N -l"
+RUN git clone -b 1.13.2 https://github.com/istio/istio.git
+RUN go build -gcflags="all=-N -l" istio/pilot/cmd/pilot-agent
 
 
 FROM istio/proxyv2:1.13.2-debug
