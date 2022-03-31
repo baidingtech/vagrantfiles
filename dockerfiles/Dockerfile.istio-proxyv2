@@ -7,9 +7,7 @@ RUN cd istio/pilot/cmd/pilot-agent && go build -gcflags="all=-N -l" -o /tmp/pilo
 
 FROM istio/proxyv2:1.13.2-debug
 WORKDIR /
-COPY --from=build-env /go/bin/dlv /usr/bin/dlv
-RUN rm -f /usr/bin/pilot-agent
-COPY --from=build-env /tmp/pilot-agent /usr/bin/pilot-agent
+COPY --from=build-env /go/bin/dlv /tmp/pilot-agent /usr/bin/
 
 ENTRYPOINT ["dlv --listen=:5432 --headless=true exec /usr/bin/pilot-agent --"]
 
