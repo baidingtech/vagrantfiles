@@ -7,8 +7,6 @@ RUN cd istio/pilot/cmd/pilot-discovery && go build -gcflags="all=-N -l" -o /tmp/
 
 FROM istio/proxyv2:1.13.2-debug
 WORKDIR /
-COPY --from=build-env /go/bin/dlv /usr/bin/dlv
-RUN rm -f /usr/bin/pilot-discovery
-COPY --from=build-env /tmp/pilot-discovery /usr/bin/pilot-discovery
+COPY --from=build-env /go/bin/dlv /tmp/pilot-discovery /usr/bin/
 
 ENTRYPOINT ["dlv --listen=:5432 --headless=true exec /usr/bin/pilot-discovery --"]
