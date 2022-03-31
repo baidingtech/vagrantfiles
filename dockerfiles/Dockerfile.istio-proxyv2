@@ -2,7 +2,7 @@ FROM golang:1.17 AS build-env
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 WORKDIR /tmp
 RUN git clone -b 1.13.2 https://github.com/istio/istio.git
-RUN go build -gcflags="all=-N -l" istio/pilot/cmd/pilot-agent
+RUN cd istio/pilot/cmd/pilot-agent && go build -gcflags="all=-N -l" -o /tmp/pilot-agent
 
 
 FROM istio/proxyv2:1.13.2-debug
@@ -10,3 +10,5 @@ WORKDIR /
 COPY --from=build-env /go/bin/dlv /usr/bin/dlv
 RUN rm -f /usr/bin/pilot-agent
 COPY --from=build-env /tmp/pilot-agent /usr/bin/pilot-agent
+
+
