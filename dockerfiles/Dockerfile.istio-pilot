@@ -9,4 +9,4 @@ FROM istio/proxyv2:1.13.2-debug
 WORKDIR /
 COPY --from=build-env /go/bin/dlv /tmp/pilot-discovery /usr/bin/
 
-ENTRYPOINT ["dlv --listen=:5432 --headless=true exec /usr/bin/pilot-discovery --"]
+ENTRYPOINT ["dlv", "--listen=:5432", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/usr/bin/pilot-discovery", "--"]
